@@ -1,5 +1,6 @@
 import inquirer from "inquirer";
 import qr from "qr-image";
+import fs from "fs";
 
 // 1. Use the inquirer npm package to get user input.
 inquirer
@@ -8,7 +9,16 @@ inquirer
     // Use user feedback for... whatever!!
     const url = answers.URL;
     let qr_svg = qr.image(url);
-    qr_svg.pipe(require("fs").createWriteStream("qr_img.png"));
+    qr_svg.pipe(fs.createWriteStream("qr_img.png"));
+
+    fs.writeFile(
+      ("URL.txt",
+      url,
+      (err) => {
+        if (err) throw err;
+        console.log("the file has been saved");
+      })
+    );
   })
   .catch((error) => {
     if (error.isTtyError) {
